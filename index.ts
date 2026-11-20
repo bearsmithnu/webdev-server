@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express from "express";
 import Hello from "./Hello";
 import Lab5 from "./Lab5/index";
@@ -5,7 +6,6 @@ import cors from "cors";
 import db from "./Kambaz/Database/index";
 import UserRoutes from "./Kambaz/Users/routes";
 import CourseRoutes from "./Kambaz/Courses/routes";
-import "dotenv/config";
 import session from "express-session";
 import ModuleRoutes from "./Kambaz/Modules/routes";
 import EnrollmentsRoutes from "./Kambaz/Enrollments/routes";
@@ -15,7 +15,7 @@ const app = express();
 
 app.use(cors({
   credentials: true,
-  origin: [process.env.CLIENT_URL, "http://localhost:3000"],
+  origin: process.env.CLIENT_URL.split(","),
 }));
 
 const sessionOptions = {
@@ -24,6 +24,7 @@ const sessionOptions = {
   saveUninitialized: false,
 };
 if (process.env.SERVER_ENV !== "development") {
+  console.log("bad times");
   sessionOptions["proxy"] = true;
   sessionOptions["cookie"] = {
     sameSite: "none",
